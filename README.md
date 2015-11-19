@@ -12,7 +12,10 @@ use Yardan\Downloader\LinkCorrecter;
 
 try {
     $downloader = new Downloader(new LinkCorrecter());
-    $result = $test->setSource('https://studentshare.net/themes/default-bootstrap/img/academic_materials.jpg')->download();
+    $downloader->setSource('http://site.com/img/picture.jpg')
+    ->setDirectory('tmp')
+    ->setOutputName('not-picture.jpg')
+    ->download();
 } catch (Exception $e){
     echo $e->getMessage();
 }
