@@ -6,6 +6,11 @@ use Yardan\Downloader\Exception\TypeException;
 
 class LinkCorrecter implements LinkCorrectorInterface
 {
+    /**
+     * @param $link
+     * @return string
+     * @throws TypeException
+     */
     public function correctLink($link)
     {
         if (!is_string($link)) {
