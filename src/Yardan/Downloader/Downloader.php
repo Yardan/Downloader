@@ -154,8 +154,9 @@ class Downloader implements DownloaderInterface
 
     /**
      * Get content by url
-     * @param string $url
-     * @return mixed
+     * @param $url
+     * @return string
+     * @throws Exception
      * @throws TypeException
      */
     protected function curl_get_contents($url){
@@ -165,10 +166,42 @@ class Downloader implements DownloaderInterface
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $data = curl_exec($ch);
+        $header = substr($data, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+        $body = substr($data, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         curl_close($ch);
-        return $data;
+
+        if(!$this->checkResponse($header)){
+            throw new Exception('Resourse is not available!');
+        }
+        return $body;
+    }
+
+    /**
+     * @param $header
+     * @return bool
+     */
+    protected function checkResponse($header){
+        $headers = explode("\n", $header);
+
+        $codes = array('200', '301', '302');
+
+        foreach($headers as $item){
+            if(strstr($item, 'HTTP')){
+                $codeItem = $item;
+                break;
+            }
+        }
+
+        foreach($codes as $code){
+            if(strstr($codeItem, $code)){
+               return true;
+            }
+        }
+
+        return false;
     }
 
 
