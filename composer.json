@@ -2,7 +2,8 @@
 	"name":"yardan/downloader",
 	"description": "File downloader by link",
 	"require": {
-		"php":">=5.3.0"
+		"php":">=5.3.0",
+	  	"phpunit/phpunit": "~4.8"
 	},
 	"autoload": {
         "psr-0": { "Yardan": "src/" }
